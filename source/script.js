@@ -10,6 +10,43 @@ var step = getPluginParameter('step')
 
 var currentValue = fieldProperties.CURRENT_ANSWER
 
+// EXTRA BUTTONS
+
+var formGroup = document.querySelector('.form-group')
+var controlMessage = document.querySelector('.control-message')
+var formattedSpan = document.querySelector('#slider-value')
+var buttonContainer = document.querySelector('#buttons')
+var warningContainer = document.querySelector('#warning')
+var yesButton = document.querySelector('#yes')
+var noButton = document.querySelector('#no')
+var invalidBox = document.querySelector('.error-box')
+
+var fieldType = fieldProperties.FIELDTYPE
+var appearance = fieldProperties.APPEARANCE
+var buttonsDisp = ''
+var specialConstraint
+
+if (fieldType === 'integer') {
+  specialConstraint = new RegExp('^-?[0-9]+$')
+  invalidBox.innerHTML = 'Invalid: Answer must be a valid integer.'
+} else if (fieldType === 'decimal') {
+  specialConstraint = new RegExp('^-?([0-9]+.?[0-9]*)|([0-9]*.?[0-9]+)$')
+  invalidBox.innerHTML = 'Invalid: Answer must be a valid decimal number.'
+} else { // All that should be left is "text"
+  if (appearance.indexOf('numbers_phone') !== -1) {
+    specialConstraint = new RegExp('^[0-9-+.#* ]+$')
+    invalidBox.innerHTML = 'Invalid: Answer can only contain numbers, hyphens (-), plus signs (+), dots (.), hash signs (#), asterisks (*), and/or spaces.'
+  } else if (appearance.indexOf('numbers_decimal') !== -1) {
+    specialConstraint = new RegExp('^-?([0-9]+.?[0-9]*)|([0-9]*.?[0-9]+)$')
+    invalidBox.innerHTML = 'Invalid: Answer must be a valid decimal number.'
+  } else if (appearance.indexOf('numbers') !== -1) {
+    specialConstraint = new RegExp('^[0-9-+. ]+$')
+    invalidBox.innerHTML = 'Invalid: Answer can only contain numbers, hyphens (-), plus signs (+), dots (.), and/or spaces.'
+  } else {
+    specialConstraint = new RegExp('.+')
+  }
+}
+
 // Get parameter values and set the max and min based on these
 var enteredMin = getPluginParameter('min')
 var enteredMax = getPluginParameter('max')
@@ -104,7 +141,7 @@ $('.slider')
 })
 
 if (currentValue != null) {
-  Number($('.slider').slider('value', currentValue))
+  $('.slider').slider('value', currentValue)
 }
 
 // Define what happens when the user attempts to clear the response
@@ -119,45 +156,7 @@ function setFocus () {
   }
 }
 
-// EXTRA BUTTONS
-
-var formGroup = document.querySelector('.form-group')
-var controlMessage = document.querySelector('.control-message')
-var formattedSpan = document.querySelector('#slider-value')
-var buttonContainer = document.querySelector('#buttons')
-var warningContainer = document.querySelector('#warning')
-var yesButton = document.querySelector('#yes')
-var noButton = document.querySelector('#no')
-var invalidBox = document.querySelector('.error-box')
-
-var fieldType = fieldProperties.FIELDTYPE
-var appearance = fieldProperties.APPEARANCE
-var altValues = []
-var buttonsDisp = ''
-var specialConstraint
-
 invalidBox.style.display = 'none'
-
-if (fieldType === 'integer') {
-  specialConstraint = new RegExp('^-?[0-9]+$')
-  invalidBox.innerHTML = 'Invalid: Answer must be a valid integer.'
-} else if (fieldType === 'decimal') {
-  specialConstraint = new RegExp('^-?([0-9]+.?[0-9]*)|([0-9]*.?[0-9]+)$')
-  invalidBox.innerHTML = 'Invalid: Answer must be a valid decimal number.'
-} else { // All that should be left is "text"
-  if (appearance.indexOf('numbers_phone') !== -1) {
-    specialConstraint = new RegExp('^[0-9-+.#* ]+$')
-    invalidBox.innerHTML = 'Invalid: Answer can only contain numbers, hyphens (-), plus signs (+), dots (.), hash signs (#), asterisks (*), and/or spaces.'
-  } else if (appearance.indexOf('numbers_decimal') !== -1) {
-    specialConstraint = new RegExp('^-?([0-9]+.?[0-9]*)|([0-9]*.?[0-9]+)$')
-    invalidBox.innerHTML = 'Invalid: Answer must be a valid decimal number.'
-  } else if (appearance.indexOf('numbers') !== -1) {
-    specialConstraint = new RegExp('^[0-9-+. ]+$')
-    invalidBox.innerHTML = 'Invalid: Answer can only contain numbers, hyphens (-), plus signs (+), dots (.), and/or spaces.'
-  } else {
-    specialConstraint = new RegExp('.+')
-  }
-}
 
 for (var buttonNumber = 1; buttonNumber <= 100; buttonNumber++) {
   var buttonLabel = getPluginParameter('button' + String(buttonNumber))
@@ -165,7 +164,6 @@ for (var buttonNumber = 1; buttonNumber <= 100; buttonNumber++) {
   if ((buttonLabel != null) && (buttonValue != null)) {
     var buttonHtml = '<button id="' + buttonLabel + '" class="altbutton button' + String(buttonNumber % 2) + '" value="' + buttonValue + '" dir="auto">' + buttonLabel + '</button>'
     buttonsDisp += buttonHtml
-    altValues.push(buttonValue) // Currently not used
   } else {
     break // Stop looking for buttons when number in parameter name is not found
   }
@@ -183,7 +181,7 @@ for (var b = 0; b < numButtons; b++) {
       var clickedLabel = e.target.innerHTML
       var clickedValue = e.target.value
       var currentInput = $('.slider').slider('value')
-      if ((currentInput === '') || (currentInput == null) || (String(clickedValue) === String(currentInput))) {
+      if ((currentInput === '') || (currentInput == 0) || (String(clickedValue) === String(currentInput))) {
         setMetaData(clickedLabel)
         setAnswer(clickedValue)
       } else {
@@ -256,9 +254,12 @@ function dispWarning (clickedLabel, clickedValue) { // Displays the warning when
   document.querySelector('#yes').addEventListener('click', function () {
     setMetaData(clickedLabel)
     setAnswer(clickedValue)
+    $('.slider').slider('value', 0)
+    $('#slider-value').html(clickedLabel)
+    warningContainer.style.display = 'none'
   })
 
-querySelector('#no').addEventListener('click', function () {
+  document.querySelector('#no').addEventListener('click', function () {
     warningContainer.style.display = 'none'
   })
 }
