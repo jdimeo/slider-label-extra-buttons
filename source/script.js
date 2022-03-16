@@ -53,14 +53,54 @@ $('.slider')
     last: lastView,
     rest: restView
   })
-
-$('.slider').on('slidechange', function (e, ui) {
+  .on('slidechange', function (e, ui) {
+	
+  currentValue = $('.slider').slider('value')
+	
   // Use this if you want to display the changing value of the slider on the screen - check the template.html too
   if (displayValue != null) {
-    $('#slider-value').html($('.slider').slider('value'))
-    console.log($('.slider').slider('value'))
+    $('#slider-value').html(currentValue)
+    console.log(currentValue)
   }
-  setAnswer(Number($('.slider').slider('value')))
+  setAnswer(Number(currentValue))
+  
+  formGroup.classList.remove('has-error')
+  controlMessage.innerHTML = ''
+
+  if (appearance.indexOf('show_formatted') !== -1) {
+    var ansString = currentValue.toString()
+    var pointLoc = ansString.indexOf('.')
+
+    if (pointLoc === -1) {
+      formattedSpan.innerHTML = ansString.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    } else {
+      var beforePoint = ansString.substring(0, pointLoc).replace(/\B(?=(\d{3})+(?!\d))/g, ',') // efore the decimal point
+
+      // The part below adds commas to the numbers after the decimal point. Unfortunately, a lookbehind assersion breaks the JS in iOS right now, so this has been commented out for now.
+      /* var midPoint = answer.substring(pointLoc + 1, pointLoc + 3) // he first two digits after the decimal point this is because the first two digits after the decimal point are the "tenths" and "hundredths", while after that is "thousandths"
+      var afterPoint = answer.substring(pointLoc + 3, answer.length).replace(/\B(?<=(^(\d{3})+))/g, ",") // fter the first two digits after the decimal point
+      var total = beforePoint
+
+      if (midPoint != '') { // dds the decimal point only if it is needed
+        total += '.' + midPoint
+        if (afterPoint != '') { // dds the comma after "midPoint" and the rest only if they are needed
+          total += ',' + afterPoint
+        }
+      } */
+      var afterPoint = ansString.substring(pointLoc, ansString.length)
+      var total = beforePoint + afterPoint
+
+      formattedSpan.innerHTML = total
+    }
+  }
+
+  if ((currentValue === '') || specialConstraint.test(currentValue)) {
+    invalidBox.style.display = 'none'
+    setMetaData('')
+    setAnswer(currentValue)
+  } else {
+    invalidBox.style.display = ''
+  }
 })
 
 if (currentValue != null) {
@@ -80,12 +120,10 @@ function setFocus () {
 }
 
 // EXTRA BUTTONS
-/* global fieldProperties, setAnswer, getPluginParameter, setMetaData, goToNextField */
 
-var input = document.querySelector('#field')
 var formGroup = document.querySelector('.form-group')
 var controlMessage = document.querySelector('.control-message')
-var formattedSpan = document.querySelector('#formatted')
+var formattedSpan = document.querySelector('#slider-value')
 var buttonContainer = document.querySelector('#buttons')
 var warningContainer = document.querySelector('#warning')
 var yesButton = document.querySelector('#yes')
@@ -101,29 +139,19 @@ var specialConstraint
 invalidBox.style.display = 'none'
 
 if (fieldType === 'integer') {
-  input.inputmode = 'numeric'
-  input.type = 'number'
   specialConstraint = new RegExp('^-?[0-9]+$')
   invalidBox.innerHTML = 'Invalid: Answer must be a valid integer.'
 } else if (fieldType === 'decimal') {
-  input.inputmode = 'decimal'
-  input.type = 'number'
   specialConstraint = new RegExp('^-?([0-9]+.?[0-9]*)|([0-9]*.?[0-9]+)$')
   invalidBox.innerHTML = 'Invalid: Answer must be a valid decimal number.'
 } else { // All that should be left is "text"
   if (appearance.indexOf('numbers_phone') !== -1) {
-    input.inputmode = 'tel'
-    input.type = 'tel'
     specialConstraint = new RegExp('^[0-9-+.#* ]+$')
     invalidBox.innerHTML = 'Invalid: Answer can only contain numbers, hyphens (-), plus signs (+), dots (.), hash signs (#), asterisks (*), and/or spaces.'
   } else if (appearance.indexOf('numbers_decimal') !== -1) {
-    input.inputmode = 'decimal'
-    input.type = 'number'
     specialConstraint = new RegExp('^-?([0-9]+.?[0-9]*)|([0-9]*.?[0-9]+)$')
     invalidBox.innerHTML = 'Invalid: Answer must be a valid decimal number.'
   } else if (appearance.indexOf('numbers') !== -1) {
-    input.inputmode = 'numeric'
-    input.type = 'number'
     specialConstraint = new RegExp('^[0-9-+. ]+$')
     invalidBox.innerHTML = 'Invalid: Answer can only contain numbers, hyphens (-), plus signs (+), dots (.), and/or spaces.'
   } else {
@@ -154,11 +182,10 @@ for (var b = 0; b < numButtons; b++) {
     button.addEventListener('click', function (e) { // Adds event listener to buttons
       var clickedLabel = e.target.innerHTML
       var clickedValue = e.target.value
-      var currentInput = input.value
+      var currentInput = $('.slider').slider('value')
       if ((currentInput === '') || (currentInput == null) || (String(clickedValue) === String(currentInput))) {
         setMetaData(clickedLabel)
         setAnswer(clickedValue)
-        input.value = clickedValue
       } else {
         dispWarning(clickedLabel, clickedValue)
       }
@@ -184,47 +211,6 @@ if (warningMessage == null) {
 }
 warningContainer.style.display = 'none'
 
-input.oninput = function () {
-  formGroup.classList.remove('has-error')
-  controlMessage.innerHTML = ''
-  var currentAnswer = input.value
-
-  if (appearance.indexOf('show_formatted') !== -1) {
-    var ansString = currentAnswer.toString()
-    var pointLoc = currentAnswer.indexOf('.')
-
-    if (pointLoc === -1) {
-      formattedSpan.innerHTML = ansString.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    } else {
-      var beforePoint = ansString.substring(0, pointLoc).replace(/\B(?=(\d{3})+(?!\d))/g, ',') // efore the decimal point
-
-      // The part below adds commas to the numbers after the decimal point. Unfortunately, a lookbehind assersion breaks the JS in iOS right now, so this has been commented out for now.
-      /* var midPoint = answer.substring(pointLoc + 1, pointLoc + 3) // he first two digits after the decimal point this is because the first two digits after the decimal point are the "tenths" and "hundredths", while after that is "thousandths"
-      var afterPoint = answer.substring(pointLoc + 3, answer.length).replace(/\B(?<=(^(\d{3})+))/g, ",") // fter the first two digits after the decimal point
-      var total = beforePoint
-
-      if (midPoint != '') { // dds the decimal point only if it is needed
-        total += '.' + midPoint
-        if (afterPoint != '') { // dds the comma after "midPoint" and the rest only if they are needed
-          total += ',' + afterPoint
-        }
-      } */
-      var afterPoint = ansString.substring(pointLoc, ansString.length)
-      var total = beforePoint + afterPoint
-
-      formattedSpan.innerHTML = total
-    }
-  }
-
-  if ((currentAnswer === '') || specialConstraint.test(currentAnswer)) {
-    invalidBox.style.display = 'none'
-    setMetaData('')
-    setAnswer(currentAnswer)
-  } else {
-    invalidBox.style.display = ''
-  }
-}
-
 function buttonFontAdjuster (button) { // djusts size of the text of the buttons in case the text is too long
   var fontSize = parseInt(window.getComputedStyle(button, null).getPropertyValue('font-size'))
   var stopper = 50
@@ -239,19 +225,8 @@ function buttonFontAdjuster (button) { // djusts size of the text of the buttons
 }
 
 function clearAnswer () {
-  input.value = ''
   setMetaData('')
   setAnswer('')
-}
-
-function setFocus () {
-  input.focus()
-
-  if (!fieldProperties.READONLY) {
-    if (window.showSoftKeyboard) {
-      window.showSoftKeyboard()
-    }
-  }
 }
 
 function cursorToEnd (el) { // oves cursor to end of text in text box (incondistent in non-text fields)
@@ -281,8 +256,6 @@ function dispWarning (clickedLabel, clickedValue) { // Displays the warning when
   document.querySelector('#yes').addEventListener('click', function () {
     setMetaData(clickedLabel)
     setAnswer(clickedValue)
-    input.value = clickedValue
-    warningContainer.style.display = 'none'
   })
 
 querySelector('#no').addEventListener('click', function () {

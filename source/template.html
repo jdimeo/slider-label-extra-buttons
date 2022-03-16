@@ -39,17 +39,23 @@
 
 <!-- if the field is not marked read only, show the input box always. -->
 {{^READONLY}}
-
-    <div class="sliderContainer">
+    <div class="form-group sliderContainer">
+      <em class="control-message" dir="auto"></em>
+      
       <div class="slider"></div>
+      
+      <!-- use this if you want to display the changing value of the slider on the screen - check the script.js too-->
+      <div class="label default-question-text-size">
+        <p id="slider-value"></p>
+      </div>
+
+      <div id="buttons"></div>      
     </div>
-    
-    <div id="buttons"></div>
-
-    <!-- use this if you want to display the changing value of the slider on the screen - check the script.js too-->
-    <div class="label default-question-text-size">
-      <p id="slider-value"></p>
-    </div>
-
-
 {{/READONLY}}
+
+<div class="label-container" id="warning" dir="auto">
+    <div id="warning-message">Warning: This field already has a value. Are you sure you would like to replace it?</div>
+    <button id="yes" class="whitebutton">Yes</button><button id="no" class="bluebutton">No</button>
+</div>
+
+<div class="error-box">Invalid entry!</div>
