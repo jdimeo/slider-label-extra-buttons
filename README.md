@@ -1,62 +1,78 @@
-# Slider with labels
+# Slider with labels (with buttons!)
 ![Preview - slider with different markers](/extras/preview.jpg)
 
 
 # Description
 Allows for a slider with an option for markers or labels.
 
-[![Download now](extras/download-button.png)](https://github.com/surveycto/slider-label/raw/master/slider-label.fieldplugin.zip)
+[![Download now](extras/download-button.png)](https://github.com/jdimeo/slider-label-extra-buttons/raw/master/slider-label-buttons.fieldplugin.zip)
 
 # Features
 * Display a slider with markers
 * Allow for varying step size
 * Allow for displaying the value
+* Add extra buttons to *text*, *integer*, and/or *decimal* field.
+* Customize button value and text
+* Add as many buttons as needed
+* Warning if button pressed when field has a value
 
 # Data Format
 The field value will be the last value indicated on the slider. This will be an integer for an [integer field](https://docs.surveycto.com/02-designing-forms/01-core-concepts/03f.field-types-integer.html) or a decimal for a [decimal field](https://docs.surveycto.com/02-designing-forms/01-core-concepts/03g.field-types-decimal.html).
 
+If one of the buttons was pressed, the field value will be the value associated with that button.
+
 # Default SurveyCTO feature support
 
-Feature / Property |	Support
------------------- |  ---------
-Supported field type(s) |	integer, decimal
-Default values	| Yes
-Constraint message	| Uses default behavior
-Required message | Uses default behavior
-Read only	| Yes (shows the current value, if present)
-media:image	| Yes
-media:audio	| Yes
-media:video	| Yes
+| Feature / Property | Support |
+|------------------|---------|
+| Supported field type(s) |	integer, decimal |
+| Default values | Yes |
+| Constraint message | Uses default behavior |
+| Required message | Uses default behavior |
+| Read only	| Yes (shows the current value, if present) |
+| media:image | Yes |
+| media:audio | Yes |
+| media:video | Yes |
 
 # How to use
 
-1. Download the test form [extras/sample-form](https://github.com/surveycto/slider-label/raw/master/extras/sample-form/Sample%20form%20-%20slider-labe%20field%20plug-inl.xlsx) from this repo and upload it to your SurveyCTO server.
-1. Download the [slider-label.fieldplugin.zip](https://github.com/surveycto/slider-label/raw/master/slider-label.fieldplugin.zip) file from this repo, and attach it to the test form on your SurveyCTO server.
+1. Download the test form [extras/sample-form](https://github.com/jdimeo/slider-label-buttons/raw/master/extras/sample-form/slider-label-buttons-sample.xlsx) from this repo and upload it to your SurveyCTO server.
+1. Download the [slider-label-buttons.fieldplugin.zip](https://github.com/jdimeo/slider-label-buttons/raw/master/slider-label-buttons.fieldplugin.zip) file from this repo, and attach it to the test form on your SurveyCTO server.
 1. Make sure to provide the correct parameters (see below).
 
 # Parameters
-The plugin can take up to 5 parameters:
+The plugin can take the following parameters:
 
-1. `min` - The lowest value in the range of permitted values.
-2. `max` - The greatest value in the range of permitted values.
-3. `markers` - can take three values.
-  -none - slider will have no markers.
-  -yes - slider will have markers at set intervals (determined by the step parameter).
-  -labels - slider will have labels and markers.
-4. `step` - The step attribute is a number that specifies the granularity that the value must adhere to. The default is 1 for integer and 0.1 for decimals.
-5. `display_value` (optional) - use this to display the current value of the slider below the slider.
+|**Name**|**Description**|
+|---|---|
+| `min` | The lowest value in the range of permitted values. |
+| `max` | The greatest value in the range of permitted values. |
+| `markers` | can take three values: `none` slider will have no markers, `yes` slider will have markers at set intervals (determined by the step parameter), `labels` slider will have labels and markers. |
+| `step` | The step attribute is a number that specifies the granularity that the value must adhere to. The default is 1 for integer and 0.1 for decimals. |
+|`button#` (required)|See [button parameters](#button-parameters) below to learn more.|
+|`value#` (required)|See [button parameters](#button-parameters) below to learn more.|
+|`warning` (optional)|Used to customize the warning message that will appear when the enumerator presses a button when the field already has a value. The value of this parameter will be displayed instead of the default warning message.|
+|`yes` (optional)|What will be displayed instead of "Yes" in the confirmation.|
+|`no` (optional)|What will be displayed instead of "No" in the confirmation.|
+
+##### Button parameters
+
+For each extra button you would like to add, you will need a label, called "button", and a "value". For the parameter name, take the parameter name, and add the button number. For example, the parameter for the label of the first button will be `button1`, the parameter for the label of the second button will be `button2`, and so on. The parameter for the value for the first button will be `value1`, the parameter for the value of the second button will be `value2`, and so on. You can add as many or as few buttons as you'd like.
+
+Be sure to update your *constraint* so it accepts the button values as values.
 
 Examples usage is as follows:
 
-`custom-slider-label(min="0", max="100", markers="none")`  
-`custom-slider-label(min="0", max="100", markers="yes")`  
-`custom-slider-label(min="0", max="100", markers="labels")`  
-`custom-slider-label(min="0", max="1", markers="labels", step=0.1)`  
-`custom-slider-label(min="0", max="10", markers="labels", step=1, display_value="yes")`  
+`custom-slider-label-buttons(min="0", max="100", markers="none")`  
+`custom-slider-label-buttons(min="0", max="100", markers="yes")`  
+`custom-slider-label-buttons(min="0", max="100", markers="labels")`  
+`custom-slider-label-buttons(min="0", max="1", markers="labels", step=0.1)`  
+`custom-slider-label-buttons(min="0", max="10", markers="labels", step=1)`  
+`custom-slider-label-buttons(min="0", max="10", button1="No answer", value1=999)`
 
 # More resources
 ### Sample form
-You can find a form definition in this repo here: [extras/sample_form](https://github.com/surveycto/slider-label/raw/master/extras/sample-form/Sample%20form%20-%20slider-labe%20field%20plug-inl.xlsx). This form will help you create a sample form to test the functionality of the field plug-in.
+You can find a form definition in this repo here: [extras/sample_form](https://github.com/jdimeo/slider-label-buttons/raw/master/extras/sample-form/slider-label-buttons-sample.xlsx). This form will help you create a sample form to test the functionality of the field plug-in.
 
 ### Developer documentation   
 * **Source resources** <br>
