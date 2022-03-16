@@ -1,4 +1,4 @@
-/* global $, fieldProperties, setAnswer, getPluginParameter, clearAnswer, getMetaData, setMetaData */
+/* global $, fieldProperties, setAnswer, getPluginParameter, getMetaData, setMetaData */
 
 $('.ui-slider-handle').draggable()
 
@@ -79,6 +79,19 @@ if (step != null) {
   step = getPluginParameter('step')
 }
 
+function setCurrentValue(v, l) {
+  if (v != currentValue) {
+	currentValue = v
+	$('.slider').slider('value', v)
+	setAnswer(Number(v))
+	setMetaData(l)
+	  
+	if (displayValue != null) {
+	  $('#slider-value').html(v)
+	}
+  }
+}
+
 $('.slider')
   .slider({
     min: enteredMin,
@@ -92,49 +105,14 @@ $('.slider')
   })
   .on('slidechange', function (e, ui) {
 	
-  currentValue = $('.slider').slider('value')
+  setCurrentValue($('.slider').slider('value'))
 	
-  // Use this if you want to display the changing value of the slider on the screen - check the template.html too
-  if (displayValue != null) {
-    $('#slider-value').html(currentValue)
-    console.log(currentValue)
-  }
-  setAnswer(Number(currentValue))
-  
   formGroup.classList.remove('has-error')
   controlMessage.innerHTML = ''
-
-  if (appearance.indexOf('show_formatted') !== -1) {
-    var ansString = currentValue.toString()
-    var pointLoc = ansString.indexOf('.')
-
-    if (pointLoc === -1) {
-      formattedSpan.innerHTML = ansString.replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-    } else {
-      var beforePoint = ansString.substring(0, pointLoc).replace(/\B(?=(\d{3})+(?!\d))/g, ',') // efore the decimal point
-
-      // The part below adds commas to the numbers after the decimal point. Unfortunately, a lookbehind assersion breaks the JS in iOS right now, so this has been commented out for now.
-      /* var midPoint = answer.substring(pointLoc + 1, pointLoc + 3) // he first two digits after the decimal point this is because the first two digits after the decimal point are the "tenths" and "hundredths", while after that is "thousandths"
-      var afterPoint = answer.substring(pointLoc + 3, answer.length).replace(/\B(?<=(^(\d{3})+))/g, ",") // fter the first two digits after the decimal point
-      var total = beforePoint
-
-      if (midPoint != '') { // dds the decimal point only if it is needed
-        total += '.' + midPoint
-        if (afterPoint != '') { // dds the comma after "midPoint" and the rest only if they are needed
-          total += ',' + afterPoint
-        }
-      } */
-      var afterPoint = ansString.substring(pointLoc, ansString.length)
-      var total = beforePoint + afterPoint
-
-      formattedSpan.innerHTML = total
-    }
-  }
 
   if ((currentValue === '') || specialConstraint.test(currentValue)) {
     invalidBox.style.display = 'none'
     setMetaData('')
-    setAnswer(currentValue)
   } else {
     invalidBox.style.display = ''
   }
@@ -143,11 +121,6 @@ $('.slider')
 if (currentValue != null) {
   $('.slider').slider('value', currentValue)
 }
-
-// Define what happens when the user attempts to clear the response
-/* function clearAnswer() {
-    $( "#slider-value" ).html(  $(".slider").slider("value") );
-} */
 
 // If the field is not marked readonly, then focus on the field
 function setFocus () {
@@ -178,14 +151,11 @@ for (var b = 0; b < numButtons; b++) {
   buttonFontAdjuster(button)
   if (!fieldProperties.READONLY) {
     button.addEventListener('click', function (e) { // Adds event listener to buttons
-      var clickedLabel = e.target.innerHTML
-      var clickedValue = e.target.value
       var currentInput = $('.slider').slider('value')
-      if ((currentInput === '') || (currentInput == 0) || (String(clickedValue) === String(currentInput))) {
-        setMetaData(clickedLabel)
-        setAnswer(clickedValue)
+      if ((currentInput === '') || (currentInput == 0) || (String(e.target.value) === String(currentInput))) {
+		setCurrentValue(e.target.value, e.target.innerHTML)
       } else {
-        dispWarning(clickedLabel, clickedValue)
+        dispWarning(e.target.innerHTML, e.target.value)
       }
     })
   }
@@ -222,11 +192,6 @@ function buttonFontAdjuster (button) { // djusts size of the text of the buttons
   }
 }
 
-function clearAnswer () {
-  setMetaData('')
-  setAnswer('')
-}
-
 function cursorToEnd (el) { // oves cursor to end of text in text box (incondistent in non-text fields)
   if (typeof el.selectionStart === 'number') {
     el.selectionStart = el.selectionEnd = el.value.length
@@ -252,10 +217,7 @@ function dispWarning (clickedLabel, clickedValue) { // Displays the warning when
   warningContainer.style.display = ''
 
   document.querySelector('#yes').addEventListener('click', function () {
-    setMetaData(clickedLabel)
-    setAnswer(clickedValue)
-    $('.slider').slider('value', 0)
-    $('#slider-value').html(clickedLabel)
+	setCurrentValue(clickedValue, clickedLabel)
     warningContainer.style.display = 'none'
   })
 
