@@ -50,6 +50,8 @@ if (fieldType === 'integer') {
 // Get parameter values and set the max and min based on these
 var enteredMin = getPluginParameter('min')
 var enteredMax = getPluginParameter('max')
+var labelMin = getPluginParameter('min_label')
+var labelMax = getPluginParameter('max_label')
 var enteredView = getPluginParameter('markers')
 var displayValue = getPluginParameter('display_value')
 
@@ -77,6 +79,13 @@ if (enteredView === 'yes') {
 
 if (step != null) {
   step = getPluginParameter('step')
+}
+
+if (labelMin != null) {
+	$('#slider-min').html(labelMin)
+}
+if (labelMax != null) {
+	$('#slider-max').html(labelMax)
 }
 
 function setCurrentValue(v, l) {

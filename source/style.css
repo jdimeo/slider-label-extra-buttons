@@ -6,12 +6,25 @@
 #slider-value {
   text-align: center;
 }
-  .slider .ui-slider-handle {
+
+.slider .ui-slider-handle {
   border-radius: 23px;
   height: 23px;
   width: 23px;
   top: -7px;
   border: 2px solid #4CAF50;
+}
+
+.slider-min {
+	padding-top: 4px;
+	float: left;
+}
+.slider-max {
+	padding-top: 4px;
+	float: right;
+}
+#buttons {
+	clear: both;
 }
 
 .slider{
@@ -105,14 +118,6 @@ button.altbutton{
     margin-right: 5px;
     overflow: hidden;
     vertical-align: top;
-}
-
-.button1{
-    background-color: #efefef;
-}
-
-.button0{
-    background-color: #8d8d8d;
 }
 
 button.whitebutton, button.bluebutton {
