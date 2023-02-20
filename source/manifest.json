@@ -1,7 +1,7 @@
 {
 	"name" : "Slider with Labels with Extra buttons (Spanish)",
 	"author" : "jdimeo",
-	"version": "1.1.1",
+	"version": "1.1.2",
 	"supportedFieldTypes": ["integer", "decimal"],
     "externalCss": [ "jquery-ui-slider-pips-min.css", "jquery-ui.min.css" ],
    	"externalJs": [ "jquery-3.4.1.min.js","jquery-ui.min.js","jquery-ui-slider-pips-min.js", "jquery.ui.touch-punch.min.js" ],
