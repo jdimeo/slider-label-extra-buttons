@@ -1,166 +1,182 @@
 .sliderContainer {
-  width: 100%;
-  margin-right: 0;
-}
-
-#slider-value {
-  text-align: center;
-}
-
-.slider .ui-slider-handle {
-  border-radius: 23px;
-  height: 23px;
-  width: 23px;
-  top: -7px;
-  border: 2px solid #4CAF50;
-}
-
-.slider-min {
-	padding-top: 4px;
-	float: left;
-}
-.slider-max {
-	padding-top: 4px;
-	float: right;
-}
-#buttons {
-	clear: both;
-}
-
-.slider{
-  position: relative;
-  margin-left: 12px;
-  margin-right: 25px;
-}
-
-/*Extra buttons*/
-
-body{
-    /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
-    -webkit-font-smoothing: antialiased;
-    font-weight: 300;
-}
-
-.label-container { /*Label*/
     width: 100%;
-    margin-bottom: 15px;
-    font-weight: 400;
-    line-height: 1.42857143;
-    display: inline-block;
-    max-width: 100%;
-}
-
-.help-block {/*Hint*/
-    margin-top: 5px;
-    font-size: 12px;
-    display: block;
-    margin-bottom: 5px;
-    color: #737373;
-    font-style: italic;
-    font-weight: 300;
-}
-
-.form-control { /*Input box*/
-    border-radius: 0!important;
-    box-shadow: none;
-    display: block;
-    width: 95%;
-    padding: 6px 12px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    background-color: #fff;
-    background-image: none;
-    border: 1px solid #ccc;
-    transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;overflow: hidden;
-    overflow-wrap: break-word;
-    resize: horizontal;
-    height: 20px;
-    outline: none;
-    font-family: inherit;
-    font: inherit;
-    margin: 0;
-}
-
-.form-control:focus { /*Input box when focused*/
-    border-color: #047cc2!important;
-    box-shadow: none;
-}
-
-.field-number-formatted{
-    display: inline-block;
-    font-weight: 400;
-    padding: 5px 10px 2px;
-    margin-bottom: 0px;
-}
-
-button{
+    margin-right: 0;
+    margin-top: 35px;
+  }
+  
+  #slider-value {
     text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    outline: none;
-    cursor: pointer;
-    box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
-    inset -2px -2px 3px rgba(0, 0, 0, .6);
-}
+  }
+  
+  .slider .ui-slider-handle {
+    border-radius: 23px;
+    height: 23px;
+    width: 23px;
+    top: -7px;
+    border: 2px solid #4CAF50;
+  }
+  
+  .slider-min {
+      padding-top: 4px;
+      text-align: center;
+      float: left;
+      inline-size: 120px;
+      color: #367fa9;
+      font-weight: bold;
+      padding-left: 0px;
 
-button:active{
-    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
-                inset 2px 2px 3px rgba(0, 0, 0, .6);
-}
+  }
+  .slider-max {
+      padding-top: 4px;
+      text-align: center;
+      float: right;
+      inline-size: 120px;
+      color: #367fa9;
+      font-weight: bold;
+      padding-right: 0px;
+  }
+  #buttons {
+      clear: both;
+  }
+  
+  .slider{
+    position: relative;
+    margin-left: 55px;
+    margin-right: 55px;
+  }
 
-button.altbutton{
-    color: #000000;
-    height: 30px;
-    width: 120px;
-    font-size: 16px;
-    border-radius: 10px;
-    margin-top: 5px;
-    margin-right: 5px;
-    overflow: hidden;
-    vertical-align: top;
-}
-
-button.whitebutton, button.bluebutton {
-    width: 55px;
-    font-weight: 500;
-    border-radius: 3px;
-    box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.09);
-    display: inline-block;
-    padding: 6px 0px;
-    font-size: 14px;
-    line-height: 1.42857143;
-    margin-right: 5px;
-}
-
-button.whitebutton{
-    background-color: #ffffff;
-    border-color: #367fa9;
-    color: #000000;
-}
-
-button.bluebutton{
-    background-color: #047cc2;
-    border-color: #367fa9;
-    color: #ffffff;
-}
-
-.has-error em.control-message { /*Error area when there is an error*/
-    background: #f56954;
-    display: block;
-    width: 96%;
-    color: #FFF;
-    padding: 5px 10px;
-}
-
-.form-group.has-error .form-control { /*Input box when there is an error*/
-    border-color: #f56954!important;
-    box-shadow: none;
-}
-
-.error-box {
-    background: #f56954;
-    display: block;
-    width: 96%;
-    color: #FFF;
-    padding: 5px 10px;
-}
+  .ui-slider-label{
+    color: #367fa9;
+  }
+  
+  /*Extra buttons*/
+  
+  body{
+      /*font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;*/
+      -webkit-font-smoothing: antialiased;
+      font-weight: 300;
+  }
+  
+  .label-container { /*Label*/
+      width: 100%;
+      margin-bottom: 15px;
+      font-weight: 400;
+      line-height: 1.42857143;
+      display: inline-block;
+      max-width: 100%;
+  }
+  
+  .help-block {/*Hint*/
+      margin-top: 5px;
+      font-size: 12px;
+      display: block;
+      margin-bottom: 5px;
+      color: #737373;
+      font-style: italic;
+      font-weight: 300;
+  }
+  
+  .form-control { /*Input box*/
+      border-radius: 0!important;
+      box-shadow: none;
+      display: block;
+      width: 95%;
+      padding: 6px 12px;
+      font-size: 14px;
+      line-height: 1.42857143;
+      background-color: #fff;
+      background-image: none;
+      border: 1px solid #ccc;
+      transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;overflow: hidden;
+      overflow-wrap: break-word;
+      resize: horizontal;
+      height: 20px;
+      outline: none;
+      font-family: inherit;
+      font: inherit;
+      margin: 0;
+  }
+  
+  .form-control:focus { /*Input box when focused*/
+      border-color: #047cc2!important;
+      box-shadow: none;
+  }
+  
+  .field-number-formatted{
+      display: inline-block;
+      font-weight: 400;
+      padding: 5px 10px 2px;
+      margin-bottom: 0px;
+  }
+  
+  button{
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      outline: none;
+      cursor: pointer;
+      box-shadow: inset 2px 2px 3px rgba(255, 255, 255, .6),
+      inset -2px -2px 3px rgba(0, 0, 0, .6);
+  }
+  
+  button:active{
+      box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
+                  inset 2px 2px 3px rgba(0, 0, 0, .6);
+  }
+  
+  button.altbutton{
+      color: #000000;
+      height: 30px;
+      width: 120px;
+      font-size: 16px;
+      border-radius: 10px;
+      margin-top: 5px;
+      margin-right: 5px;
+      overflow: hidden;
+      vertical-align: top;
+  }
+  
+  button.whitebutton, button.bluebutton {
+      width: 55px;
+      font-weight: 500;
+      border-radius: 3px;
+      box-shadow: inset 0 -1px 0 0 rgba(0, 0, 0, 0.09);
+      display: inline-block;
+      padding: 6px 0px;
+      font-size: 14px;
+      line-height: 1.42857143;
+      margin-right: 5px;
+  }
+  
+  button.whitebutton{
+      background-color: #ffffff;
+      border-color: #367fa9;
+      color: #000000;
+  }
+  
+  button.bluebutton{
+      background-color: #047cc2;
+      border-color: #367fa9;
+      color: #ffffff;
+  }
+  
+  .has-error em.control-message { /*Error area when there is an error*/
+      background: #f56954;
+      display: block;
+      width: 96%;
+      color: #FFF;
+      padding: 5px 10px;
+  }
+  
+  .form-group.has-error .form-control { /*Input box when there is an error*/
+      border-color: #f56954!important;
+      box-shadow: none;
+  }
+  
+  .error-box {
+      background: #f56954;
+      display: block;
+      width: 96%;
+      color: #FFF;
+      padding: 5px 10px;
+  }

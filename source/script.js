@@ -7,6 +7,8 @@ var firstView = false
 var lastView = false
 var restView = false
 var step = getPluginParameter('step')
+var stepLabel = getPluginParameter('step_label')
+var startValue = document.querySelector('start_value')
 
 var currentValue = fieldProperties.CURRENT_ANSWER
 
@@ -56,7 +58,15 @@ var enteredView = getPluginParameter('markers')
 var displayValue = getPluginParameter('display_value')
 
 if (step == null) {
-  step = 1
+    step = 1
+}
+
+if (stepLabel == null) {
+    stepLabel = enteredMax - enteredMin
+}
+
+if (startValue == null) {
+    startValue = (enteredMax - enteredMin)/2
 }
 
 enteredMin = parseInt(enteredMin)
@@ -77,9 +87,16 @@ if (enteredView === 'yes') {
   restView = false
 }
 
-if (step != null) {
-  step = getPluginParameter('step')
-}
+//These were in the original code, but I don't think they are needed
+//as they will reset values which were set if they labels were null,
+//thereby subverting the prupose of default 'if null' values.
+// if (step != null) {
+//     step = getPluginParameter('step')
+// }
+
+// if (stepLabel != null) {
+//     stepLabel = getPluginParameter('step_label')
+// }
 
 if (labelMin != null) {
 	$('#slider-min').html(labelMin)
@@ -105,13 +122,16 @@ $('.slider')
   .slider({
     min: enteredMin,
     max: enteredMax,
-    step: step
+    step: step,
+    value: startValue
   })
   .slider('pips', {
-    first: firstView,
-    last: lastView,
-    rest: restView
+    first: 'label',
+    last: 'label',
+    rest: 'label',
+    step: stepLabel
   })
+  .slider('float')
   .on('slidechange', function (e, ui) {
 	
   setCurrentValue($('.slider').slider('value'))
