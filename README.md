@@ -54,6 +54,9 @@ The plugin can take the following parameters:
 |`warning` (optional)|Used to customize the warning message that will appear when the enumerator presses a button when the field already has a value. The value of this parameter will be displayed instead of the default warning message.|
 |`yes` (optional)|What will be displayed instead of "Yes" in the confirmation.|
 |`no` (optional)|What will be displayed instead of "No" in the confirmation.|
+|`step_label`(optional)|Will place labels at intervals of every `step_label`. Default is to place labels only at the `min` and `max` values of the slider.|
+|`start_value`(optional)|Determines the starting value of the handle of the slider. Default is to place the handle in the center of the slider.|
+|`label_show`(optional)|Toggles the labels in general showing them: `show`, or hiding them: `hide`. Default is to show labels.|
 
 ##### Button parameters
 
