@@ -8,7 +8,8 @@ var lastView = false
 var restView = false
 var step = getPluginParameter('step')
 var stepLabel = getPluginParameter('step_label')
-var startValue = document.querySelector('start_value')
+var startValue = getPluginParameter('start_value')
+var labelShow = getPluginParameter('label_show')
 
 var currentValue = fieldProperties.CURRENT_ANSWER
 
@@ -69,6 +70,14 @@ if (startValue == null) {
     startValue = (enteredMax - enteredMin)/2
 }
 
+if (labelShow == null){
+  labelShow = 'label'
+} if (labelShow == 'show'){
+  labelShow = 'label'
+} if (labelShow == 'hide'){
+  labelShow = false
+}
+
 enteredMin = parseInt(enteredMin)
 enteredMax = parseInt(enteredMax)
 step = Number(step)
@@ -126,9 +135,9 @@ $('.slider')
     value: startValue
   })
   .slider('pips', {
-    first: 'label',
-    last: 'label',
-    rest: 'label',
+    first: labelShow,
+    last: labelShow,
+    rest: labelShow,
     step: stepLabel
   })
   .slider('float')
