@@ -44,7 +44,7 @@ If one of the buttons was pressed, the field value will be the value associated 
 The plugin can take the following parameters:
 
 |**Name**|**Description**|
-|---|---|
+|-------|---|
 | `min` | The lowest value in the range of permitted values. |
 | `max` | The greatest value in the range of permitted values. |
 | `markers` | can take three values: `none` slider will have no markers, `yes` slider will have markers at set intervals (determined by the step parameter), `labels` slider will have labels and markers. |
@@ -54,6 +54,9 @@ The plugin can take the following parameters:
 |`warning` (optional)|Used to customize the warning message that will appear when the enumerator presses a button when the field already has a value. The value of this parameter will be displayed instead of the default warning message.|
 |`yes` (optional)|What will be displayed instead of "Yes" in the confirmation.|
 |`no` (optional)|What will be displayed instead of "No" in the confirmation.|
+|`step_label` (optional)|Will place labels at intervals of every `step_label`. Default is to place labels only at the `min` and `max` values of the slider.|
+|`start_value` (optional)|Determines the starting value of the handle of the slider. Default is to place the handle in the center of the slider.|
+|`label_show` (optional)|Toggles the labels in general. Shows them: `show`; or hides them: `hide`. Default is to show labels.|
 
 ##### Button parameters
 
